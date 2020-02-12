@@ -5,6 +5,7 @@ export default class App extends React.Component {
     return (
       <div>
         <h1>This is a react app</h1>
+        <p>Lorem, ipsum dolor</p>
       </div>
     );
   }
