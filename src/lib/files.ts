@@ -354,7 +354,7 @@ const MOCK_FILES: GithubFile[] = [
   }
 ];
 
-export async function loadFiles(owner: string, repo: string, branch: string = 'master', path: string = '/') {
+export async function loadFiles(owner: string, repo: string, branch: string = 'master', path: string = '/'): Promise<GithubFile[]> {
   owner;
   repo;
   branch;
@@ -371,7 +371,7 @@ export function normalizeGtihubFiles(idPrefix: string, githubFiles: GithubFile[]
     }));
 }
 
-export async function loadNormalizedFiles(owner: string, repo: string, branch: string = 'master', path: string = '/'): File[] {
+export async function loadNormalizedFiles(owner: string, repo: string, branch: string = 'master', path: string = '/'): Promise<File[]> {
     const githubFiles = await loadFiles(owner, repo, branch, path);
     const idPrefix = [owner, repo, branch, path].join('/');
     return normalizeGtihubFiles(idPrefix, githubFiles);
