@@ -15,7 +15,7 @@ export interface FilesStatusesState {
 const DEFAULT_STATE: FilesStatusesState = {};
 
 // actions
-const setFileStatus = createAction<{ fileId: FileId; status: FileStatus }>(
+export const setFileStatus = createAction<{ fileId: FileId; status: FileStatus }>(
   "FILES_STATUSES/SET_FILE_STATUS"
 );
 
