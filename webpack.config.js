@@ -1,5 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const buildTimeEnvVariables = {
+    GITHUB_HOST: process.env.GITHUB_HOST
+};
+
+console.log(`process.env.GITHUB_HOST is ${process.env.GITHUB_HOST}`);
 
 module.exports = {
     entry: path.join(__dirname, 'src', 'index.tsx'),
@@ -19,7 +24,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'src', 'templates', 'index.html'),
             filename: path.join(__dirname, 'build', 'index.html'),
-            hash: true
+            hash: true,
+            buildTimeEnvVariables: JSON.stringify(buildTimeEnvVariables)
         })
     ],
 
@@ -29,5 +35,7 @@ module.exports = {
 
     resolve: {
         extensions: ['*', '.js', '.ts', '.tsx']
-    }
+    },
+    
+    devtool: 'eval-source-map'
 };

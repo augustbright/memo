@@ -4,7 +4,16 @@ import App from "./components/App";
 import { Provider } from "react-redux";
 import configureStore from "./redux/configure";
 
-const store = configureStore();
+const store = configureStore({
+  browser: {
+    owner: 'augustbright',
+    repository: 'memo',
+    branch: 'master',
+    path: ''
+  },
+  files: {},
+  filesStatuses: {}
+});
 
 ReactDOM.render(
   <Provider store={store}>

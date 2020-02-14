@@ -1,41 +1,22 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { FileId } from "../lib/files";
+import { FileLocation } from "../lib/files";
 
-type RepositoryId = string;
-type WorkingRepository = RepositoryId | null;
-type WorkingDirectory = FileId | null;
+export type BrowserState = FileLocation;
+const DEFAULT_STATE: BrowserState = {};
 
-// State
-interface IBrowserState {
-  repo: WorkingRepository;
-  cwd: WorkingDirectory;
-}
+// Action: Set current location
+export const setLocation = createAction<FileLocation>("BROWSER/SET_LOCATION");
+export type ActionSetLocation = ReturnType<typeof setLocation>;
 
-const DEFAULT_STATE = {
-  repo: null,
-  cwd: null
-};
-
-// Action: Set current work dir
-const ACTION_SET_CWD = "BROWSER/SET_CWD";
-type PayloadOfSetCWD = WorkingDirectory;
-export const setCWD = createAction<PayloadOfSetCWD>(ACTION_SET_CWD);
-
-// Action: Set current repo
-const ACTION_SET_REPO = "BROWSER/SET_REPO";
-type PayloadOfSetRepo = WorkingRepository;
-export const setRepo = createAction<PayloadOfSetRepo>(ACTION_SET_REPO);
+// Action: Load files
+export const loadFiles = createAction<FileLocation>("BROWSER/LOAD_FILES");
+export type ActionLoadFiles = ReturnType<typeof loadFiles>;
 
 // Reducer
-export const browser = createReducer<IBrowserState>(DEFAULT_STATE, builder =>
+export const browser = createReducer<BrowserState>(DEFAULT_STATE, builder =>
   builder
-    .addCase(setCWD, (state, action) => ({
+    .addCase(setLocation, (state, action) => ({
       ...state,
-      cwd: action.payload
-    }))
-    .addCase(setRepo, (state, action) => ({
-      ...state,
-      repo: action.payload,
-      cwd: null
+      ...action.payload
     }))
 );
