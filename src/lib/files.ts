@@ -34,6 +34,10 @@ export interface File {
 }
 
 export async function loadFromGithub(location: FileLocation): Promise<File[]> {
+  if (!isValidLocation(location)) {
+    throw new Error("Invalid location");
+  }
+
   const url = getLocationURL(location);
   const response = await fetch(url);
   const parsed: GithubResponse = await response.json();
@@ -51,7 +55,15 @@ export async function loadFromGithub(location: FileLocation): Promise<File[]> {
       return false;
     })
     .map((githubFile): File => {
-      const id = [location.owner, location.repository, location.branch, location.path, githubFile.name].join('/');
+      const id = getFileId({
+        ...location,
+        path: [location.path, githubFile.name].join('/').replace(/\/+/g, '/')
+      });
+
+      if (!id) {
+        throw new Error("Invalid location");
+      }
+
       const value = {
         id,
         name: githubFile.name,
@@ -75,7 +87,7 @@ export function getFileLocation(fileId: FileId): FileLocation {
 }
 
 export function getFileId(location: FileLocation): FileId | null {
-  return [location.owner || '', location.repository || '', location.branch || '', location.path || ''].join('/') || null;
+  return [location.owner || '', location.repository || '', location.branch || '', location.path || ''].join('/').replace(/\/+/g, '/') || null;
 }
 
 export function getLocationURL(location: FileLocation): string {
@@ -94,4 +106,8 @@ export function getLocationURL(location: FileLocation): string {
     'contents',
     location.path,
   ].join('/')}?ref=${location.branch}`;
+}
+
+function isValidLocation(location: FileLocation): boolean {
+  return Boolean(location.owner && location.repository && location.branch);
 }
