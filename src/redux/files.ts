@@ -21,7 +21,4 @@ export const prepare = createAction<{fileId: FileId}>("FILE/PREPARE");
 
 export const files = createReducer<FileState>(DEFAULT_STATE, builder => 
     builder
-        .addCase(prepare, (state, action) => {
-            // side effects
-        })
 );

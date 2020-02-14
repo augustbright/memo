@@ -6,7 +6,7 @@ type WorkingDirectory = FileId | null;
 // State
 interface IBrowserState {
     cwd: WorkingDirectory;
-};
+}
 
 const DEFAULT_STATE = {
     cwd: null
