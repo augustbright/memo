@@ -76,6 +76,10 @@ export async function loadFromGithub(location: FileLocation): Promise<File[]> {
     });
 }
 
+export function getFileLocationFromPathname(pathname: string): FileLocation {
+  return getFileLocation(pathname.slice(1));
+}
+
 export function getFileLocation(fileId: FileId): FileLocation {
   const [owner, repository, branch, ...path] = fileId.split('/');
   return {
@@ -108,6 +112,6 @@ export function getLocationURL(location: FileLocation): string {
   ].join('/')}?ref=${location.branch}`;
 }
 
-function isValidLocation(location: FileLocation): boolean {
+export function isValidLocation(location: FileLocation): boolean {
   return Boolean(location.owner && location.repository && location.branch);
 }

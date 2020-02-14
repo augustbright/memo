@@ -6,12 +6,14 @@ import {
 } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import { rootSaga } from "./saga";
-import { browser, loadFiles } from "./browser";
+import { loadFiles } from "./browser";
 import { files } from "./files";
 import { filesStatuses } from "./filesStatuses";
-import { selectBrowserState } from "./selectors";
 
-export const reducer = combineReducers({ browser, files, filesStatuses });
+export const reducer = combineReducers({
+  files,
+  filesStatuses
+});
 export type AppState = ReturnType<typeof reducer>;
 
 export default (preloadedState?: AppState): Store<AppState> => {
@@ -24,11 +26,5 @@ export default (preloadedState?: AppState): Store<AppState> => {
   });
 
   sagaMiddleware.run(rootSaga);
-
-  // load files
-  const state = store.getState();
-  const currentLocation = selectBrowserState(state);
-  store.dispatch(loadFiles(currentLocation));
-  
   return store;
 };

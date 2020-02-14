@@ -2,7 +2,7 @@ import { fork, take, call, select, put } from "redux-saga/effects";
 import { loadFiles, ActionLoadFiles, setLocation, ActionSetLocation } from "./browser";
 import { selectFilesState } from './selectors';
 import { FilesStatusesState, FileStatus, setFileStatus } from "./filesStatuses";
-import { getFileId, loadFromGithub, File, FileLocation } from "../lib/files";
+import { getFileId, loadFromGithub, File, FileLocation, isValidLocation } from "../lib/files";
 import { add } from './files';
 
 export function* browserLoadFiles(location: FileLocation) {
@@ -21,7 +21,7 @@ export function* onBrowserLoadFiles(action: ActionLoadFiles) {
     const filesStates: FilesStatusesState = yield select(selectFilesState);
     const fileId = getFileId(action.payload);
 
-    if (!fileId) {
+    if (!fileId || !isValidLocation(action.payload)) {
       // Means, no location is selected
       return;
     }
