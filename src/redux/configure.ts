@@ -6,11 +6,12 @@ import {
 } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import { rootSaga } from "./saga";
-import { loadFiles } from "./browser";
+import { browser } from "./browser";
 import { files } from "./files";
 import { filesStatuses } from "./filesStatuses";
 
 export const reducer = combineReducers({
+  browser,
   files,
   filesStatuses
 });

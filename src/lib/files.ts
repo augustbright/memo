@@ -77,7 +77,25 @@ export async function loadFromGithub(location: FileLocation): Promise<File[]> {
 }
 
 export function getFileLocationFromPathname(pathname: string): FileLocation {
-  return getFileLocation(pathname.slice(1));
+  const [location='', argsLine=''] = pathname.replace(/^\/|\/$/g, '').split('?');
+  const args = argsLine.split('&');
+  const argsEntries = args.map(argPair => argPair.split('='));
+  const [, ext] = argsEntries.find(([key]) => key === 'ext') || [];
+  const [owner, repository, branch, ...path] = location.split('/');
+
+  return {
+    owner,
+    repository,
+    branch,
+    path: path.join('/') + (ext ? `.${ext}` : '')
+  };
+}
+
+export function getPathnameFromFileLocation(location: FileLocation): string {
+  const [path="", ext=""] = location.path?.split('.') || [];
+  const search = ext ? `?ext=${ext}` : '';
+  
+  return `/${location.owner}/${location.repository}/${location.branch}/${path}${search}`;
 }
 
 export function getFileLocation(fileId: FileId): FileLocation {

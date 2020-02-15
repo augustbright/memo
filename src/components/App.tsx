@@ -1,24 +1,21 @@
-import React, { MouseEvent } from "react";
+import React from "react";
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
-import { loadFiles } from '../redux/browser';
+import { setLocation as browserSetLocation } from '../redux/browser';
 import { AppState } from "../redux/configure";
 import { getFileLocationFromPathname } from '../lib/files'
 import { compose } from 'redux';
+import ContentArea from './ContentArea';
 
 const mapState = (state: AppState) => ({});
-const mapDispatch = { loadFiles };
+const mapDispatch = { browserSetLocation };
 const withRedux = connect(mapState, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof withRedux>
 
-type AppProps = RouteComponentProps & PropsFromRedux & {}
+type AppOwnProps = {}
+type AppProps = RouteComponentProps & PropsFromRedux & AppOwnProps
 
 class App extends React.Component<AppProps> {
-  constructor(props: AppProps) {
-    super(props);
-    this.onButtonClick = this.onButtonClick.bind(this);
-  }
-
   componentDidMount() {
     this.updateLocation();
   }
@@ -30,25 +27,18 @@ class App extends React.Component<AppProps> {
   }
 
   updateLocation(): void {
-    this.props.loadFiles(
-      getFileLocationFromPathname(this.props.location.pathname)
+    this.props.browserSetLocation(
+      getFileLocationFromPathname(this.props.location.pathname + this.props.location.search)
     );
-  }
-
-  onButtonClick(event: MouseEvent): void {
-    event.preventDefault();
-    this.props.history.push('/hola1');
   }
 
   render() {
     return (
       <div>
-        <h1>This is a react app</h1>
-        <p>Lorem, ipsum dolor</p>
-        <button onClick={this.onButtonClick}>to hola</button>
+        <ContentArea />
       </div>
     );
   }
 }
 
-export default compose(withRedux, withRouter)(App);
+export default compose(withRedux, withRouter)(App) as React.ComponentClass<AppOwnProps>;

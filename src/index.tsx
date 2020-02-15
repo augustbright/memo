@@ -7,6 +7,7 @@ import {} from 'react-router';
 import configureStore from "./redux/configure";
 
 const store = configureStore({
+  browser: {},
   files: {},
   filesStatuses: {}
 });
