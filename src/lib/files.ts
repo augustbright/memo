@@ -33,6 +33,8 @@ export interface File {
   content?: string;
 }
 
+export type Material = string | Array<Material | string>;
+
 export async function loadFromGithub(location: FileLocation): Promise<File[]> {
   if (!isValidLocation(location)) {
     throw new Error("Invalid location");
@@ -41,7 +43,8 @@ export async function loadFromGithub(location: FileLocation): Promise<File[]> {
   const url = getLocationURL(location);
   const response = await fetch(url);
   const parsed: GithubResponse = await response.json();
-  const githubFiles = parsed instanceof Array ? parsed : [parsed];
+  const isDirectory = parsed instanceof Array;
+  const githubFiles = (isDirectory ? parsed : [parsed]) as GithubFile[];
 
   return githubFiles
     .filter(githubFile => {
@@ -57,7 +60,7 @@ export async function loadFromGithub(location: FileLocation): Promise<File[]> {
     .map((githubFile): File => {
       const id = getFileId({
         ...location,
-        path: [location.path, githubFile.name].join('/').replace(/\/+/g, '/')
+        path: isDirectory ? [location.path, githubFile.name].join('/').replace(/\/+/g, '/') : location.path
       });
 
       if (!id) {
@@ -94,7 +97,7 @@ export function getFileLocationFromPathname(pathname: string): FileLocation {
 export function getPathnameFromFileLocation(location: FileLocation): string {
   const [path="", ext=""] = location.path?.split('.') || [];
   const search = ext ? `?ext=${ext}` : '';
-  
+
   return `/${location.owner}/${location.repository}/${location.branch}/${path}${search}`;
 }
 

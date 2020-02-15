@@ -31,3 +31,13 @@ export const selectCurrentLocationFiles = (state: AppState): File[] => {
         })
         .map(([key, value]) => value);
 };
+
+
+export const selectCurrentLocationFile = (state: AppState): File | void => {
+    if (selectLocationType(state) !== 'file') { return; }
+    
+    const fileId = getFileId(selectCurrentLocation(state));
+    if (!fileId) { return; }
+
+    return selectFiles(state)[fileId];
+}
