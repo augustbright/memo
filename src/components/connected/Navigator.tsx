@@ -10,7 +10,8 @@ const mapState = (state: AppState) => ({
         owner: selectBrowser(state).owner,
         repository: selectBrowser(state).repository,
         branch: selectBrowser(state).branch
-    }
+    },
+    path: selectBrowser(state).path
 });
 
 const mapDispatch = (dispatch: Dispatch<AnyAction>) => ({

@@ -11,6 +11,7 @@ export type MaterialDomain = {
 export type NavigatorProps = {
     onApply: (domain: MaterialDomain) => void;
     initialDomain: MaterialDomain;
+    path?: string;
 };
 
 export type NavigatorState = MaterialDomain & {};
@@ -64,17 +65,32 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
         });
     }
 
-    getHref(): string {
+    getHref(path=''): string {
         return getPathnameFromFileLocation({
             owner: this.state.owner || this.props.initialDomain.owner,
             repository: this.state.repository || this.props.initialDomain.repository,
-            branch: this.state.branch || this.props.initialDomain.branch
+            branch: this.state.branch || this.props.initialDomain.branch,
+            path
         });
+    }
+
+    getPathArray(): {title: string, href: string}[] {
+        return [
+            {
+                title: 'home', 
+                href: this.getHref()
+            }, 
+            ...(this.props.path || '').split('/').map((title, index, titles) => ({
+                title,
+                href: this.getHref(titles.slice(0, index + 1).join('/'))
+            }))
+        ];
     }
 
     render() {
         return (
             <nav>
+                {/* Inputs */}
                 <form>
                     <div>
                         <label htmlFor="owner">Owner</label>
@@ -92,9 +108,22 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
                             placeholder={this.props.initialDomain.branch} onChange={this.onChangeBranch} value={this.state.branch} />
                     </div>
                 </form>
-                
-                <Link to={this.getHref()}>Go</Link>
-                <button onClick={this.onClickCancel}>Cancel</button>
+
+                {/* Buttons */}
+                <div>
+                    <Link to={this.getHref()}>Go</Link>
+                    <button onClick={this.onClickCancel}>Cancel</button>
+                </div>
+
+                {/* Path */}
+                <div>
+                    {this.getPathArray().map(pathItem => (
+                        <span>
+                            &gt;&nbsp;
+                            <Link to={pathItem.href}>{pathItem.title}</Link>
+                        </span>
+                    ))}
+                </div>
             </nav>
         );
     }

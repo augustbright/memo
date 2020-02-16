@@ -112,7 +112,12 @@ export function getFileLocation(fileId: FileId): FileLocation {
 }
 
 export function getFileId(location: FileLocation): FileId | null {
-  return [location.owner || '', location.repository || '', location.branch || '', location.path || ''].join('/').replace(/\/+/g, '/') || null;
+  return [
+    location.owner || '', 
+    location.repository || '', 
+    location.branch || '', 
+    location.path || ''
+  ].join('/').replace(/\/+/g, '/').replace(/^\//, '').replace(/\/$/, '') || null;
 }
 
 export function getLocationURL(location: FileLocation): string {
