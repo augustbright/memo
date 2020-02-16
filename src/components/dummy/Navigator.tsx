@@ -1,6 +1,7 @@
-import React, { ChangeEvent, FormEvent, MouseEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import { getPathnameFromFileLocation } from '../../lib/files';
 import { Link } from 'react-router-dom';
+import { Form, FormField, Button, Breadcrumb } from 'semantic-ui-react';
 
 export type MaterialDomain = {
     owner?: string;
@@ -65,7 +66,7 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
         });
     }
 
-    getHref(path=''): string {
+    getHref(path = ''): string {
         return getPathnameFromFileLocation({
             owner: this.state.owner || this.props.initialDomain.owner,
             repository: this.state.repository || this.props.initialDomain.repository,
@@ -74,15 +75,13 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
         });
     }
 
-    getPathArray(): {title: string, href: string}[] {
+    getPathArray(): { content: React.ReactNode }[] {
         return [
             {
-                title: 'home', 
-                href: this.getHref()
-            }, 
+                content: <Link to={this.getHref()}>Home</Link>
+            },
             ...(this.props.path || '').split('/').map((title, index, titles) => ({
-                title,
-                href: this.getHref(titles.slice(0, index + 1).join('/'))
+                content: <Link to={this.getHref(titles.slice(0, index + 1).join('/'))}>{title}</Link>
             }))
         ];
     }
@@ -91,38 +90,34 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
         return (
             <nav>
                 {/* Inputs */}
-                <form>
-                    <div>
+                <Form>
+                    <FormField>
                         <label htmlFor="owner">Owner</label>
                         <input id="owner" type='text'
                             placeholder={this.props.initialDomain.owner} onChange={this.onChangeOwner} value={this.state.owner} />
-                    </div>
-                    <div>
+                    </FormField>
+                    <FormField>
                         <label htmlFor="repository">Repository</label>
                         <input id="repository" type='text'
                             placeholder={this.props.initialDomain.repository} onChange={this.onChangeRepository} value={this.state.repository} />
-                    </div>
-                    <div>
+                    </FormField>
+                    <FormField>
                         <label htmlFor="branch">Branch</label>
                         <input id="branch" type='text'
                             placeholder={this.props.initialDomain.branch} onChange={this.onChangeBranch} value={this.state.branch} />
-                    </div>
-                </form>
+                    </FormField>
+                </Form>
 
                 {/* Buttons */}
-                <div>
-                    <Link to={this.getHref()}>Go</Link>
-                    <button onClick={this.onClickCancel}>Cancel</button>
-                </div>
+                <Button.Group>
+                    <Button onClick={this.onClickCancel}>Cancel</Button>
+                    <Button.Or />
+                    <Button onClick={() => this.clearDomain()} to={this.getHref()} as={Link} positive>Apply</Button>
+                </Button.Group>
 
                 {/* Path */}
                 <div>
-                    {this.getPathArray().map(pathItem => (
-                        <span key={pathItem.href}>
-                            &gt;&nbsp;
-                            <Link to={pathItem.href}>{pathItem.title}</Link>
-                        </span>
-                    ))}
+                    <Breadcrumb divider=">" sections={this.getPathArray()}/>
                 </div>
             </nav>
         );

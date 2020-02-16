@@ -25,13 +25,19 @@ class MaterialViewer extends React.Component<MaterialViewerProps, MaterialViewer
     renderMaterial(material: ArrayOfMaterial, level: number = 0): React.ReactNode {
         return material.slice(0, this.state.position + 1).map((materialItem, index) => {
             if (typeof materialItem === 'string') {
-                return <MaterialLine key={index} title={materialItem} />;
+                return (
+                    <div onClick={() => this.setState({ position: index })}>
+                        <MaterialLine key={index} title={materialItem} />
+                    </div>
+                );
             }
 
             if (materialItem instanceof Array) {
                 return (
-                    <MaterialLine key={index} title={materialItem[0]}
-                        submaterial={materialItem.slice(1)} />
+                    <div onClick={() => this.setState({ position: index })}>
+                        <MaterialLine key={index} title={materialItem[0]}
+                            submaterial={materialItem.slice(1)} />
+                    </div>
                 );
             }
         });

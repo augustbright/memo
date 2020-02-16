@@ -7,6 +7,7 @@ import { getFileLocationFromPathname } from '../lib/files'
 import { compose } from 'redux';
 import ContentArea from './ContentArea';
 import Navigator from './connected/Navigator';
+import { Divider } from 'semantic-ui-react';
 
 const mapState = (state: AppState) => ({});
 const mapDispatch = { browserSetLocation };
@@ -37,6 +38,7 @@ class App extends React.Component<AppProps> {
     return (
       <div>
         <Navigator />
+        <Divider />
         <main>
           <ContentArea />
         </main>

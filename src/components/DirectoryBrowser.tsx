@@ -1,6 +1,7 @@
 import React from 'react';
 import { File, getPathnameFromFileLocation, getFileLocation } from '../lib/files';
 import { Link } from 'react-router-dom';
+import { List } from 'semantic-ui-react';
 
 type DirectoryBrowserProps = {
     files: File[];
@@ -9,15 +10,20 @@ type DirectoryBrowserProps = {
 class DirectoryBrowser extends React.Component<DirectoryBrowserProps> {
     render() {
         return (
-            <div>
+            <List>
                 {this.props.files.map(file => (
-                    <div>
-                        <Link key={file.id} to={getPathnameFromFileLocation(getFileLocation(file.id))}>
-                            {file.name}
-                        </Link>
-                    </div>
+                    <List.Item key={file.id}>
+                        <List.Icon name={file.type === 'dir' ? 'folder' : 'file'} />
+                        <List.Content>
+                            <List.Header>
+                                <Link to={getPathnameFromFileLocation(getFileLocation(file.id))}>
+                                    {file.name}
+                                </Link>
+                            </List.Header>
+                        </List.Content>
+                    </List.Item>
                 ))}
-            </div>
+            </List>
         );
     }
 }

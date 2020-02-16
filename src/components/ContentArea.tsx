@@ -9,6 +9,7 @@ import {
 import { AppState } from '../redux/configure';
 import DirectoryBrowser from './DirectoryBrowser';
 import FileViewer from './FileViewer';
+import { Dimmer, Loader } from 'semantic-ui-react';
 
 const mapStateToProps = (state: AppState) => ({
     locationType: selectLocationType(state),
@@ -26,9 +27,13 @@ type ContentAreaProps = PropsFromRedux & {};
 class ContentArea extends React.Component<ContentAreaProps> {
     render() {
         if (this.props.loading) {
-            return 'LOADING';
+            return (
+                <Dimmer active>
+                    <Loader>Loading</Loader>
+                </Dimmer>
+            );
         }
-        
+
         switch (this.props.locationType) {
             case 'file':
                 if (this.props.file) {

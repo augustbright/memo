@@ -15,8 +15,21 @@ module.exports = {
     },
     module: {
         rules: [
-            {test: /.\.ts$/, exclude: /node_modules/, use: 'awesome-typescript-loader'},
-            {test: /.\.tsx$/, exclude: /node_modules/, use: 'awesome-typescript-loader'}
+            { test: /.\.ts$/, exclude: /node_modules/, use: 'awesome-typescript-loader' },
+            { test: /.\.tsx$/, exclude: /node_modules/, use: 'awesome-typescript-loader' },
+            { test: /.\.css$/, use: ['style-loader', 'css-loader'] },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg|png)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'fonts/'
+                        }
+                    }
+                ]
+            }
         ]
     },
 
@@ -37,6 +50,6 @@ module.exports = {
     resolve: {
         extensions: ['*', '.js', '.ts', '.tsx']
     },
-    
+
     devtool: 'eval-source-map'
 };
