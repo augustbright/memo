@@ -6,6 +6,7 @@ import { AppState } from "../redux/configure";
 import { getFileLocationFromPathname } from '../lib/files'
 import { compose } from 'redux';
 import ContentArea from './ContentArea';
+import Navigator from './connected/Navigator';
 
 const mapState = (state: AppState) => ({});
 const mapDispatch = { browserSetLocation };
@@ -35,7 +36,10 @@ class App extends React.Component<AppProps> {
   render() {
     return (
       <div>
-        <ContentArea />
+        <Navigator />
+        <main>
+          <ContentArea />
+        </main>
       </div>
     );
   }
