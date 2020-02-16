@@ -1,13 +1,14 @@
 import React from 'react';
-import { File, Material } from '../lib/files';
+import { File, ArrayOfMaterial } from '../lib/files';
 import YAML from 'yaml';
+import MaterialViewer from './dummy/MaterialViewer';
 
 type FileViewerProps = {
     file: File;
 };
 
 type FileViewerState = {
-    material: Material | null;
+    material: ArrayOfMaterial | null;
 }
 
 class FileViewer extends React.Component<FileViewerProps, FileViewerState> {
@@ -36,28 +37,14 @@ class FileViewer extends React.Component<FileViewerProps, FileViewerState> {
             return;
         }
         const yamlContent = atob(this.props.file.content);
-        const material = YAML.parse(yamlContent) as Material;
+        const material = YAML.parse(yamlContent) as ArrayOfMaterial;
 
         this.setState({ material });
     }
 
-    renderMaterial(material: Material, level: number = 0): React.ReactNode {
-        if (material instanceof Array) {
-            return material.map((submaterial) => {
-                return this.renderMaterial(submaterial, level + 1);
-            });
-        }
-        return (
-            <div key={material}>
-                {'- '.repeat(level)}
-                {material}
-            </div>
-        );
-    }
-
     render() {
         if (this.state.material) {
-            return this.renderMaterial(this.state.material);
+            return <MaterialViewer material={this.state.material} />
         }
         return null;
     }

@@ -33,7 +33,8 @@ export interface File {
   content?: string;
 }
 
-export type Material = string | Array<Material | string>;
+export type ArrayOfMaterial = Array<SubArrayOfMaterial | string>;
+export type SubArrayOfMaterial = Array<SubArrayOfMaterial | string> & {'0': string};
 
 export async function loadFromGithub(location: FileLocation): Promise<File[]> {
   if (!isValidLocation(location)) {

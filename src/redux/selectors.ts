@@ -1,5 +1,5 @@
 import { AppState } from './configure';
-import { FilesStatusesState } from './filesStatuses';
+import { FilesStatusesState, FileStatus } from './filesStatuses';
 import { BrowserState } from './browser';
 import { FileType, getFileId, FileLocation, File } from '../lib/files';
 import { FileState } from './files';
@@ -17,6 +17,13 @@ export const selectLocationType = (state: AppState): FileType => {
     } else {
         return 'dir';
     }
+};
+
+export const selectLocationLoading = (state: AppState): boolean => {
+    const currentLocationId = getFileId(selectCurrentLocation(state)) || '';
+    const statuses = selectFilesStatuses(state);
+    
+    return statuses[currentLocationId] === FileStatus.LOADING;
 };
 
 export const selectCurrentLocationFiles = (state: AppState): File[] => {
