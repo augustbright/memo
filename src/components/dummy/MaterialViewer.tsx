@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { ArrayOfMaterial } from '../../lib/files';
 import MaterialLine from './MaterialLine';
+import { List } from 'semantic-ui-react';
 
 type MaterialViewerProps = {
     material: ArrayOfMaterial;
@@ -16,37 +17,53 @@ class MaterialViewer extends React.Component<MaterialViewerProps, MaterialViewer
         this.state = {
             position: 0
         };
+
+        this.onClickNext = this.onClickNext.bind(this);
     }
 
     hasMore(): boolean {
         return (this.state.position + 1) < this.props.material.length;
     }
 
+    onClickItem(event: MouseEvent, index: number) {
+        event.stopPropagation();
+        this.setState({ position: index });
+    }
+
     renderMaterial(material: ArrayOfMaterial, level: number = 0): React.ReactNode {
         return material.slice(0, this.state.position + 1).map((materialItem, index) => {
+            let itemContent: React.ReactNode;
+
             if (typeof materialItem === 'string') {
-                return (
-                    <div onClick={() => this.setState({ position: index })}>
-                        <MaterialLine key={index} title={materialItem} />
-                    </div>
-                );
+                itemContent = <MaterialLine key={index} title={materialItem} />;
             }
 
             if (materialItem instanceof Array) {
-                return (
-                    <div onClick={() => this.setState({ position: index })}>
-                        <MaterialLine key={index} title={materialItem[0]}
-                            submaterial={materialItem.slice(1)} />
-                    </div>
+                itemContent = (
+                    <MaterialLine key={index} title={materialItem[0]}
+                        submaterial={materialItem.slice(1)} />
                 );
             }
+
+            return (
+                <List.Item onClick={(event) => this.onClickItem(event, index)}>
+                    <List.Content>
+                        {itemContent}
+                    </List.Content>
+                </List.Item>
+            );
         });
+    }
+
+    onClickNext(event: MouseEvent) {
+        event.stopPropagation();
+        this.setState(state => ({ position: state.position + 1 }));
     }
 
     renderNextButton(): React.ReactNode {
         return (
             <div>
-                <button onClick={() => this.setState(state => ({ position: state.position + 1 }))}>
+                <button onClick={this.onClickNext}>
                     Next
                 </button>
             </div>
@@ -55,10 +72,10 @@ class MaterialViewer extends React.Component<MaterialViewerProps, MaterialViewer
 
     render() {
         return (
-            <div>
+            <List>
                 {this.renderMaterial(this.props.material)}
                 {this.hasMore() ? this.renderNextButton() : null}
-            </div>
+            </List>
         );
     }
 };

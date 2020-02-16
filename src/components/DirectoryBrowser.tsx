@@ -12,13 +12,11 @@ class DirectoryBrowser extends React.Component<DirectoryBrowserProps> {
         return (
             <List>
                 {this.props.files.map(file => (
-                    <List.Item key={file.id}>
+                    <List.Item as={Link} to={getPathnameFromFileLocation(getFileLocation(file.id))} key={file.id}>
                         <List.Icon name={file.type === 'dir' ? 'folder' : 'file'} />
                         <List.Content>
                             <List.Header>
-                                <Link to={getPathnameFromFileLocation(getFileLocation(file.id))}>
-                                    {file.name}
-                                </Link>
+                                {file.name}
                             </List.Header>
                         </List.Content>
                     </List.Item>

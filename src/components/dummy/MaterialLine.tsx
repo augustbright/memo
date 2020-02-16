@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, MouseEvent } from 'react';
 import { ArrayOfMaterial } from '../../lib/files';
 import MaterialViewer from './MaterialViewer';
 
@@ -19,7 +19,8 @@ class MaterialLine extends React.Component<MaterialLineProps, MaterialLineState>
         };
     }
 
-    showSubmaterial() {
+    showSubmaterial(event: MouseEvent) {
+        event.stopPropagation();
         this.setState({
             showSubmaterial: true
         });
@@ -27,7 +28,7 @@ class MaterialLine extends React.Component<MaterialLineProps, MaterialLineState>
 
     renderExpandButton(): React.ReactNode {
         return (
-            <button onClick={() => this.showSubmaterial()}>
+            <button onClick={(event) => this.showSubmaterial(event)}>
                 {`(${this.props.submaterial?.length})`}
             </button>
         );
