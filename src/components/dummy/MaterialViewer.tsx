@@ -1,7 +1,7 @@
 import React, { MouseEvent } from 'react';
 import { ArrayOfMaterial } from '../../lib/files';
 import MaterialLine from './MaterialLine';
-import { List } from 'semantic-ui-react';
+import { List, Message } from 'semantic-ui-react';
 
 type MaterialViewerProps = {
     material: ArrayOfMaterial;
@@ -62,11 +62,15 @@ class MaterialViewer extends React.Component<MaterialViewerProps, MaterialViewer
 
     renderNextButton(): React.ReactNode {
         return (
-            <div>
-                <button onClick={this.onClickNext}>
-                    Next
-                </button>
-            </div>
+            <List.Item onClick={this.onClickNext}>
+                <List.Content>
+                    <Message warning onClick={this.onClickNext}>
+                        <Message.Header>
+                            {this.props.material.length - this.state.position}
+                        </Message.Header>
+                    </Message>
+                </List.Content>
+            </List.Item>
         );
     }
 

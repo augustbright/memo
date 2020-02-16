@@ -1,6 +1,7 @@
 import React, { ReactNode, MouseEvent } from 'react';
 import { ArrayOfMaterial } from '../../lib/files';
 import MaterialViewer from './MaterialViewer';
+import { Message } from 'semantic-ui-react';
 
 type MaterialLineProps = {
     title: string;
@@ -17,21 +18,21 @@ class MaterialLine extends React.Component<MaterialLineProps, MaterialLineState>
         this.state = {
             showSubmaterial: false
         };
+
+        this.onClickMessage = this.onClickMessage.bind(this);
     }
 
-    showSubmaterial(event: MouseEvent) {
-        event.stopPropagation();
+    showSubmaterial() {
         this.setState({
             showSubmaterial: true
         });
     }
 
-    renderExpandButton(): React.ReactNode {
-        return (
-            <button onClick={(event) => this.showSubmaterial(event)}>
-                {`(${this.props.submaterial?.length})`}
-            </button>
-        );
+    onClickMessage(event: MouseEvent): void {
+        if (this.props.submaterial) {
+            event.stopPropagation();
+            this.showSubmaterial();
+        }
     }
 
     renderSubmaterial(): ReactNode {
@@ -47,8 +48,12 @@ class MaterialLine extends React.Component<MaterialLineProps, MaterialLineState>
     render() {
         return (
             <div>
-                {this.props.title}
-                {this.props.submaterial && !this.state.showSubmaterial ? this.renderExpandButton() : null}
+                <Message positive={!!this.props.submaterial} onClick={this.onClickMessage}>
+                    <Message.Header>
+                        {this.props.title}
+                        {this.props.submaterial ? `(${this.props.submaterial?.length})`: null}
+                    </Message.Header>
+                </Message>
                 {this.state.showSubmaterial ? this.renderSubmaterial() : null}
             </div>
         );
