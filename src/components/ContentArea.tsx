@@ -28,9 +28,7 @@ class ContentArea extends React.Component<ContentAreaProps> {
     render() {
         if (this.props.loading) {
             return (
-                <Dimmer active>
-                    <Loader>Loading</Loader>
-                </Dimmer>
+                <Loader active>Loading</Loader>
             );
         }
 

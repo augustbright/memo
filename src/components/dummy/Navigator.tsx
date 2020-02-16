@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { getPathnameFromFileLocation } from '../../lib/files';
 import { Link } from 'react-router-dom';
-import { Form, FormField, Button, Breadcrumb } from 'semantic-ui-react';
+import { Form, FormField, Button, Breadcrumb, Step, Icon } from 'semantic-ui-react';
 
 export type MaterialDomain = {
     owner?: string;
@@ -15,17 +15,22 @@ export type NavigatorProps = {
     path?: string;
 };
 
-export type NavigatorState = MaterialDomain & {};
+export type NavigatorState = MaterialDomain & {
+    collapsed: boolean;
+};
 
 class Navigator extends React.Component<NavigatorProps, NavigatorState> {
     constructor(props: NavigatorProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            collapsed: true
+        };
 
         this.onChangeOwner = this.onChangeOwner.bind(this);
         this.onChangeRepository = this.onChangeRepository.bind(this);
         this.onChangeBranch = this.onChangeBranch.bind(this);
         this.onClickCancel = this.onClickCancel.bind(this);
+        this.onClickApply = this.onClickApply.bind(this);
     }
 
     onChangeOwner(event: ChangeEvent<HTMLInputElement>): void {
@@ -48,6 +53,12 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
 
     onClickCancel(): void {
         this.clearDomain();
+        this.setState({ collapsed: true });
+    }
+
+    onClickApply(): void {
+        this.clearDomain();
+        this.setState({ collapsed: true });
     }
 
     getDomain(): MaterialDomain {
@@ -86,7 +97,7 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
         ];
     }
 
-    render() {
+    renderForm(): React.ReactNode {
         return (
             <nav>
                 {/* Inputs */}
@@ -112,15 +123,53 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
                 <Button.Group>
                     <Button onClick={this.onClickCancel}>Cancel</Button>
                     <Button.Or />
-                    <Button onClick={() => this.clearDomain()} to={this.getHref()} as={Link} positive>Apply</Button>
+                    <Button onClick={this.onClickApply} to={this.getHref()} as={Link} positive>Apply</Button>
                 </Button.Group>
+            </nav>
+        );
+    }
+
+    renderCollapsed(): React.ReactNode {
+        return (
+            <nav>
+                <Step.Group onClick={() => this.setState({ collapsed: false })}>
+                    <Step active>
+                        <Icon name='user' />
+                        <Step.Content>
+                            <Step.Title>{this.props.initialDomain.owner}</Step.Title>
+                        </Step.Content>
+                    </Step>
+
+                    <Step active>
+                        <Icon name='folder' />
+                        <Step.Content>
+                            <Step.Title>{this.props.initialDomain.repository}</Step.Title>
+                        </Step.Content>
+                    </Step>
+
+                    <Step active>
+                        <Icon name='code branch' />
+                        <Step.Content>
+                            <Step.Title>{this.props.initialDomain.branch}</Step.Title>
+                        </Step.Content>
+                    </Step>
+                </Step.Group>
 
                 {/* Path */}
                 <div>
-                    <Breadcrumb divider=">" sections={this.getPathArray()}/>
+                    <Breadcrumb divider=">" sections={this.getPathArray()} />
                 </div>
+
             </nav>
         );
+    }
+
+    render() {
+        if (this.state.collapsed) {
+            return this.renderCollapsed();
+        } else {
+            return this.renderForm();
+        }
     }
 }
 
