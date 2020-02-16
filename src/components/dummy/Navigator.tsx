@@ -45,7 +45,7 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
         });
     }
 
-    onClickCancel(event: MouseEvent): void {
+    onClickCancel(): void {
         this.clearDomain();
     }
 
@@ -59,9 +59,9 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
 
     clearDomain(): void {
         this.setState({
-            owner: undefined,
-            repository: undefined,
-            branch: undefined
+            owner: '',
+            repository: '',
+            branch: ''
         });
     }
 
@@ -118,7 +118,7 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
                 {/* Path */}
                 <div>
                     {this.getPathArray().map(pathItem => (
-                        <span>
+                        <span key={pathItem.href}>
                             &gt;&nbsp;
                             <Link to={pathItem.href}>{pathItem.title}</Link>
                         </span>
@@ -127,6 +127,6 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
             </nav>
         );
     }
-};
+}
 
 export default Navigator;
