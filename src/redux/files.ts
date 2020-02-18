@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { FileId, File, FileLocation } from "../lib/files";
+import { File } from "../lib/files";
 
 export interface FileState {
   [id: string]: File;
@@ -17,7 +17,10 @@ export const files = createReducer<FileState>(
     .addCase(add, (state, action) => {
       const newFiles: {[id: string]: File} = {};
 
-      action.payload.forEach(newFile => {
+      action.payload.filter((newFile) => {
+        return !(state[newFile.id]) || !state[newFile.id].content;
+      })
+      .forEach(newFile => {
         newFiles[newFile.id] = newFile;
       });
 
