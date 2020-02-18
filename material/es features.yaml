@@ -1,0 +1,67 @@
+- EcmaScript features
+
+- - es6 (2015)
+  - constants
+  - scoping
+  - arrow functions
+  - enhanced function parameters
+  - tempate literal
+  - extended literals
+  - enhanced regular expressions
+  - enhanced object properties
+  - destructuring assignment
+  - classes
+  - modules
+  - symbols
+  - interators
+  - generators
+  - Map/Set/WeakMap/WeakSet
+  - typed arrays
+  - promises
+  - meta programming
+  - i18n
+  - - new built-ins
+    - Object.assing(target, ...sources)
+    - "[].find()"
+    - "[].findIndex()"
+    - "''.repeat()"
+    - "''.startsWith()"
+    - "''.endsWith()"
+    - "''.includes()"
+    - Number.isSafeInteger()
+    - Number.EPSILON
+    - Math.trunc
+    - Math.sign
+
+- - es 2016
+  - "[].includes()"
+  - Exponential operator (**)
+
+- - es 2017
+  - async/await
+  - SharedBufferArray
+  - Atomics
+  - Object.values()
+  - Object.entries()
+  - Object.getOwnPropertyDescriptors()
+  - "''.padStart()"
+  - "''.padEnd()"
+  - trailing commas in func & arrays
+
+- - es 2018
+  - for await of
+  - rest/spread operators
+  - regexp named capture groups
+  - regexp lookbehind assertions
+  - regexp unicode property escapes
+  - regexp dotall (/s)
+  - promise.finally()
+
+- - es 2019
+  - "[].flat()"
+  - "[].flatMap()"
+  - "''.trimStart()"
+  - "''.trimEnd()"
+  - Object.fromEntries
+  - symbol.description
+  - optional catch binding
