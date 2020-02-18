@@ -30,7 +30,7 @@ class MaterialViewer extends React.Component<MaterialViewerProps, MaterialViewer
         this.setState({ position: index });
     }
 
-    renderMaterial(material: ArrayOfMaterial, level: number = 0): React.ReactNode {
+    renderMaterial(material: ArrayOfMaterial): React.ReactNode {
         return material.slice(0, this.state.position + 1).map((materialItem, index) => {
             let itemContent: React.ReactNode;
 
@@ -40,13 +40,13 @@ class MaterialViewer extends React.Component<MaterialViewerProps, MaterialViewer
 
             if (materialItem instanceof Array) {
                 itemContent = (
-                    <MaterialLine key={index} title={materialItem[0]}
+                    <MaterialLine title={materialItem[0]}
                         submaterial={materialItem.slice(1)} />
                 );
             }
 
             return (
-                <List.Item onClick={(event) => this.onClickItem(event, index)}>
+                <List.Item  key={index} onClick={(event) => this.onClickItem(event, index)}>
                     <List.Content>
                         {itemContent}
                     </List.Content>
@@ -66,7 +66,7 @@ class MaterialViewer extends React.Component<MaterialViewerProps, MaterialViewer
                 <List.Content>
                     <Message warning onClick={this.onClickNext}>
                         <Message.Header>
-                            {this.props.material.length - this.state.position}
+                            {this.props.material.length - this.state.position - 1}
                         </Message.Header>
                     </Message>
                 </List.Content>
@@ -82,6 +82,6 @@ class MaterialViewer extends React.Component<MaterialViewerProps, MaterialViewer
             </List>
         );
     }
-};
+}
 
 export default MaterialViewer;
