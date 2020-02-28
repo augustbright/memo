@@ -1,8 +1,12 @@
 const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config({path: path.join(__dirname, '.env')});
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const buildTimeEnvVariables = {
     GITHUB_HOST: process.env.GITHUB_HOST
 };
+
 
 console.log(`process.env.GITHUB_HOST is ${process.env.GITHUB_HOST}`);
 
