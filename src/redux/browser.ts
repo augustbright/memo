@@ -2,7 +2,7 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { FileLocation } from "../lib/files";
 
 export type BrowserState = FileLocation;
-const DEFAULT_STATE: BrowserState = {};
+export const DEFAULT_STATE: BrowserState = {};
 
 // Action: Set current location
 export const setLocation = createAction<FileLocation>("BROWSER/SET_LOCATION");
