@@ -1,12 +1,11 @@
 import {
   rootSaga,
   watchBrowserLoadFiles,
-  watchBrowserSetLocation,
-  onBrowserLoadFiles
+  watchBrowserSetLocation
 } from "../saga";
 import { reducer } from "../configure";
 import { loadFiles } from "../browser";
-import { testSaga, expectSaga } from "redux-saga-test-plan";
+import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
 import { selectFiles, selectFilesStatuses } from "../selectors";
 import { FileStatus } from "../filesStatuses";

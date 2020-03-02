@@ -10,7 +10,6 @@ export type MaterialDomain = {
 };
 
 export type NavigatorProps = {
-    onApply: (domain: MaterialDomain) => void;
     initialDomain: MaterialDomain;
     path?: string;
 };
@@ -121,9 +120,9 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
 
                 {/* Buttons */}
                 <Button.Group>
-                    <Button onClick={this.onClickCancel}>Cancel</Button>
+                    <Button className="navigator-cancel" onClick={this.onClickCancel}>Cancel</Button>
                     <Button.Or />
-                    <Button onClick={this.onClickApply} to={this.getHref()} as={Link} positive>Apply</Button>
+                    <Button className="navigator-link" onClick={this.onClickApply} to={this.getHref()} as={Link} positive>Apply</Button>
                 </Button.Group>
             </nav>
         );
@@ -132,7 +131,7 @@ class Navigator extends React.Component<NavigatorProps, NavigatorState> {
     renderCollapsed(): React.ReactNode {
         return (
             <nav>
-                <Step.Group onClick={() => this.setState({ collapsed: false })}>
+                <Step.Group className="navigator-expandable" onClick={() => this.setState({ collapsed: false })}>
                     <Step active>
                         <Icon name='user' />
                         <Step.Content>
